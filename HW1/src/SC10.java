@@ -41,6 +41,7 @@ public class SC10 {
 			}
 		}
 		float a = 0, b = 0, c = 0;
+//		double a = 0, b = 0, c = 0;
 		if ((as.length() - 1 - point[0]) >= 4 || (bs.length() - 1 - point[1]) >= 4 
 				|| (cs.length() - 1 - point[2]) >= 4) {
 			if (point[0] == 0 && point[1] == 0 && point[2] == 0) {
@@ -77,6 +78,9 @@ public class SC10 {
 					a = bigA.floatValue();
 					b = bigB.floatValue();
 					c = bigC.floatValue();
+//					a = bigA.doubleValue();
+//					b = bigB.doubleValue();
+//					c = bigC.doubleValue();
 //					System.out.println("before ; a = " + a + " ; b = " + b + " ; c = " + c);
 				}
 				else {
@@ -115,6 +119,9 @@ public class SC10 {
 				a = bigA.floatValue();
 				b = bigB.floatValue();
 				c = bigC.floatValue();
+//				a = bigA.doubleValue();
+//				b = bigB.doubleValue();
+//				c = bigC.doubleValue();
 				if (!positive[0])
 					a *= -1;
 				if (!positive[1])
@@ -127,19 +134,32 @@ public class SC10 {
 			a = Float.parseFloat(as);
 			b = Float.parseFloat(bs);
 			c = Float.parseFloat(cs);
+//			a = Double.parseDouble(as);
+//			b = Double.parseDouble(bs);
+//			c = Double.parseDouble(cs);
 		}
 //		System.out.println("after ; a = " + a + " ; b = " + b + " ; c = " + c);
 		float part = b * b - 4 * a * c;
+//		double part = b * b - 4 * a * c;
 		String s = "x1 = ";
 		if (part < 0) {
 			part = (float) Math.sqrt(part * (-1));
-			float real1 = -b / (2 * a);
-			float ima1 = part / (2 * a);
-			float real2 = (-2 * c * b) / (2 * b * b - 4 * a * c);
-			float ima2 = (2 * c * part) / (2 * b * b - 4 * a * c);
-			float diff = (float) (b - Math.sqrt(part));
+			float real1 = (-b / (2 * a));
+			float ima1 = (part / (2 * a));
+			float real2 = ((-2 * c * b) / (2 * b * b - 4 * a * c));
+			float ima2 = ((2 * c * part) / (2 * b * b - 4 * a * c));
+//			double real1 = -b / (2 * a);
+//			double ima1 = part / (2 * a);
+//			double real2 = (-2 * c * b) / (2 * b * b - 4 * a * c);
+//			double ima2 = (2 * c * part) / (2 * b * b - 4 * a * c);
+			float diff = (float) (Math.abs(b) - part);
 			if (Math.abs(a) <= 0.000001 || Math.abs(diff) <= 0.000001) {
-				s = s + real2 + " + " + ima2 + " i" + ", x2 = " + real2 + " - " + ima2 + " i";
+				if (b > 0) {
+					s = s + real2 + " + " + ima2 + " i" + ", x2 = " + real1 + " - " + ima1 + " i";
+				}
+				else {					
+					s = s + real1 + " + " + ima1 + " i" + ", x2 = " + real2 + " - " + ima2 + " i";
+				}
 			}
 			else {
 				s = s + real1 + " + " + ima1 + " i" + ", x2 = " + real1 + " - " + ima1 + " i";
@@ -150,13 +170,22 @@ public class SC10 {
 			}
 		} else {
 			part = (float) Math.sqrt(part);
-			float x11 = (-b + part) / (2 * a);
-			float x12 = (-b - part) / (2 * a);
-			float x21 = 2 * c / (-b - part);
-			float x22 = 2 * c / (-b + part);
-			float diff = (float) (b - Math.sqrt(part));
+			float x11 = ((-b + part) / (2 * a));
+			float x12 = ((-b - part) / (2 * a));
+			float x21 = (2 * c / (-b - part));
+			float x22 = (2 * c / (-b + part));
+//			double x11 = (-b + part) / (2 * a);
+//			double x12 = (-b - part) / (2 * a);
+//			double x21 = 2 * c / (-b - part);
+//			double x22 = 2 * c / (-b + part);
+			float diff = (float) (Math.abs(b) - part);
 			if (Math.abs(a) <= 0.000001 || Math.abs(diff) <= 0.000001) {
-				s = s + x21 + ", x2 = " + x22;
+				if (b > 0) {
+					s = s + x21 + ", x2 = " + x12;
+				}
+				else {
+					s = s + x11 + ", x2 = " + x22;
+				}
 			}
 			else {
 				s = s + x11 + ", x2 = " + x12;
@@ -165,6 +194,8 @@ public class SC10 {
 			if (!fail2) {
 				System.out.print("; x21 = " + x21 + ", x22 = " + x22);
 			}
+//			System.out.print("\ndiff = " + diff);
+//			System.out.print("\npart = " + part);
 		}
 		return s;
 
@@ -172,7 +203,7 @@ public class SC10 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("\ns = " + solvequadratic("6", "5", "-4"));
+		System.out.println("\n" + solvequadratic("6", "5", "-4"));
 		String a = "6";
 		String b = "5";
 		String c = "-4";
@@ -181,10 +212,10 @@ public class SC10 {
 			b += "0";
 			c += "0";
 		}
-		System.out.println("\ns = " + solvequadratic(a, b, c));
-		System.out.println("\ns = " + solvequadratic("0", "1", "1"));
-		System.out.println("\ns = " + solvequadratic("1", "-100000", "1"));
-		System.out.println("\ns = " + solvequadratic("1", "-4", "3.999999"));
+		System.out.println("\n" + solvequadratic(a, b, c));
+		System.out.println("\n" + solvequadratic("0", "1", "1"));
+		System.out.println("\n" + solvequadratic("1", "-100000", "1"));
+		System.out.println("\n" + solvequadratic("1", "-4", "3.999999"));
 		String a2 = "0.";
 		String b2 = "-1";
 		String c2 = "1";
@@ -196,8 +227,7 @@ public class SC10 {
 			b2 += "0";
 			c2 += "0";
 		}
-		System.out.println("\ns = " + solvequadratic(a2, b2, c2));
-
+		System.out.println("\n" + solvequadratic(a2, b2, c2));
 	}
 
 }
